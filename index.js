@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+const usersRoutes = require('./routes/usersRoutes.js');
+
 const app = express();
 dotenv.config();
 
@@ -12,6 +14,8 @@ const DBURI = process.env.DBURI;
 app.use(cors());
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
+
+app.use('/users', usersRoutes);
 
 app.get('/', (req, res) => {
     console.log(`running at port ${ PORT }`)
