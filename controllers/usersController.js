@@ -2,6 +2,76 @@ const UserModel = require("../models/userModel.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const signIn = async (req, res) => {
+  try {
+    const { mobile, password } = req.body;
+    const convertedMobile = parseInt(mobile);
+
+    const userExist = await UserModel.findOne({ mobile: convertedMobile });
+
+    if (!userExist)
+      return res
+        .status(404)
+        .json({ message: "Please subscribe to our service." });
+
+    if (
+      userExist.status.subscriptionStatus === 0 &&
+      userExist.status.accountStatus === 0
+    )
+      return res
+        .status(400)
+        .json({ message: "Please subscribe to our service." });
+
+    if (
+      userExist.status.subscriptionStatus === 0 &&
+      userExist.status.accountStatus === 2
+    )
+      return res
+        .status(400)
+        .json({ message: "Please subscribe to our service." });
+
+    // const userNotSub = await UserModel.findOne({
+    //   $or: [
+    //     {
+    //       mobile: convertedMobile,
+    //       "status.subscriptionStatus": 0,
+    //       "status.accountStatus": 0,
+    //     },
+    //     {
+    //       mobile: convertedMobile,
+    //       "status.subscriptionStatus": 0,
+    //       "status.accountStatus": 2,
+    //     },
+    //   ],
+    // });
+
+    // if (userNotSub)
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Please subscribe to our service." });
+
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      userExist.password
+    );
+
+    if (!isPasswordCorrect)
+      return res.status(400).json({ message: "Invalid credentials." });
+
+    const token = jwt.sign(
+      { mobile: userExist.mobile, id: userExist._id },
+      process.env.SECRET
+    );
+
+    res.status(200).json({ user: userExist, token });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
+
 const signUp = async (req, res) => {
   try {
     const { mobile, firstName, lastName, email, confirmPassword } = req.body;
@@ -176,6 +246,7 @@ const register = async (req, res) => {
 };
 
 module.exports = {
+  signIn,
   signUp,
   register,
 };
