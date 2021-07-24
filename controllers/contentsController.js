@@ -2,7 +2,7 @@ const ContentModel = require("../models/contentModel.js");
 
 const getFeatureds = async (req, res) => {
   try {
-    const contents = await ContentModel.find();
+    const contents = await ContentModel.find({ featured: true });
     res.status(200).json({ contents });
   } catch (error) {
     res.status(500).json({

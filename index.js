@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 
 const usersRoutes = require("./routes/usersRoutes.js");
 const contentsRoutes = require("./routes/contentsRoutes.js");
+const categoriesRoutes = require("./routes/categoriesRoutes.js");
 
 const app = express();
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 
+app.use("/categories", categoriesRoutes);
 app.use("/contents", contentsRoutes);
 app.use("/users", usersRoutes);
 
