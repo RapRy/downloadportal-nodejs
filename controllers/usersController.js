@@ -30,26 +30,6 @@ const signIn = async (req, res) => {
         .status(400)
         .json({ message: "Please subscribe to our service." });
 
-    // const userNotSub = await UserModel.findOne({
-    //   $or: [
-    //     {
-    //       mobile: convertedMobile,
-    //       "status.subscriptionStatus": 0,
-    //       "status.accountStatus": 0,
-    //     },
-    //     {
-    //       mobile: convertedMobile,
-    //       "status.subscriptionStatus": 0,
-    //       "status.accountStatus": 2,
-    //     },
-    //   ],
-    // });
-
-    // if (userNotSub)
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Please subscribe to our service." });
-
     const isPasswordCorrect = await bcrypt.compare(
       password,
       userExist.password
@@ -58,12 +38,21 @@ const signIn = async (req, res) => {
     if (!isPasswordCorrect)
       return res.status(400).json({ message: "Invalid credentials." });
 
+    const userUpdatedSignIn = await UserModel.findByIdAndUpdate(
+      userExist._id,
+      { "date.lastSignIn": new Date() },
+      { useFindAndModify: false, new: true }
+    );
     const token = jwt.sign(
-      { mobile: userExist.mobile, id: userExist._id },
+      {
+        mobile: userUpdatedSignIn.mobile,
+        id: userUpdatedSignIn._id,
+        lastSignIn: userUpdatedSignIn.date.lastSignIn,
+      },
       process.env.SECRET
     );
 
-    res.status(200).json({ user: userExist, token });
+    res.status(200).json({ user: userUpdatedSignIn, token });
   } catch (error) {
     res.status(500).json({
       message:
