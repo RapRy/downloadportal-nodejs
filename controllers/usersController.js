@@ -2,6 +2,44 @@ const UserModel = require("../models/userModel.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const updateProfile = async (req, res) => {
+  try {
+    const { id, proPic, firstName, lastName } = req.body;
+
+    const user = await UserModel.findById(id);
+
+    const dateNow = new Date();
+
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      id,
+      {
+        proPic,
+        "name.firstName": firstName,
+        "name.lastName": lastName,
+        "meta.activities": [
+          ...user.meta.activities,
+          {
+            userId: id,
+            type: "updateProfile",
+            activityRef: "name",
+            activityDesc: `${firstName} ${lastName}`,
+            createdAt: dateNow,
+          },
+        ],
+        "date.lastActivity": dateNow,
+      },
+      { useFindAndModify: false, new: true }
+    );
+
+    res.status(200).json({ user: updatedUser });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
+
 const signIn = async (req, res) => {
   try {
     const { mobile, password } = req.body;
@@ -112,6 +150,10 @@ const signUp = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(confirmPassword, 12);
 
+    const accountId = Math.floor(
+      Math.random() * (10000000 - 99999999 + 1) + 99999999
+    );
+
     const updatedAccount = await UserModel.findOneAndUpdate(
       { mobile: convertedMobile },
       {
@@ -119,6 +161,7 @@ const signUp = async (req, res) => {
         "name.lastName": lastName,
         email: email,
         password: hashedPassword,
+        accountId: accountId,
         "status.accountStatus": 1,
         "date.signUp": new Date(),
       },
@@ -238,4 +281,5 @@ module.exports = {
   signIn,
   signUp,
   register,
+  updateProfile,
 };

@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
+const userActivities = new Schema({
+  userId: String,
+  type: String,
+  activityRef: String,
+  activityDesc: String,
+  createdAt: Date,
+});
 const userSchema = new Schema({
   name: {
     firstName: String,
@@ -24,7 +31,7 @@ const userSchema = new Schema({
   meta: {
     downloads: [String],
     comments: [String],
-    activities: [String],
+    activities: [userActivities],
   },
   date: {
     subscribe: Date,
@@ -33,7 +40,6 @@ const userSchema = new Schema({
     signUp: Date,
     lastActivity: Date,
     lastSignIn: Date,
-    lastSignOut: Date,
   },
 });
 
