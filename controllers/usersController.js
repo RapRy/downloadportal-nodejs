@@ -2,6 +2,53 @@ const UserModel = require("../models/userModel.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const deactivateAccount = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    console.log(id);
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong, try sending form again.",
+    });
+  }
+};
+
+const updateSettings = async (req, res) => {
+  try {
+    const { id, updated, sms, email } = req.body;
+
+    const user = await UserModel.findById(id);
+    const dateNow = new Date();
+
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      id,
+      {
+        "receiveUpdate.sms": sms,
+        "receiveUpdate.email": email,
+        "meta.activities": [
+          ...user.meta.activities,
+          {
+            userId: id,
+            type: "updateSettings",
+            activityRef: updated,
+            activityDesc: updated,
+            createdAt: dateNow,
+          },
+        ],
+        "date.lastActivity": dateNow,
+      },
+      { useFindAndModify: false, new: true }
+    );
+
+    res.status(200).json({ user: updatedUser });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong, try sending form again.",
+    });
+  }
+};
+
 const changePassword = async (req, res) => {
   try {
     const { id, confirmPassword } = req.body;
@@ -32,7 +79,6 @@ const changePassword = async (req, res) => {
 
     res.status(200).json({ user: updatedUser });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "Something went wrong, try sending form again.",
     });
@@ -319,4 +365,6 @@ module.exports = {
   register,
   updateProfile,
   changePassword,
+  updateSettings,
+  deactivateAccount,
 };
