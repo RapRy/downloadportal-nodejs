@@ -2,6 +2,43 @@ const UserModel = require("../models/userModel.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const changePassword = async (req, res) => {
+  try {
+    const { id, confirmPassword } = req.body;
+
+    const hashedPassword = await bcrypt.hash(confirmPassword, 12);
+
+    const user = await UserModel.findById(id);
+    const dateNow = new Date();
+
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      id,
+      {
+        password: hashedPassword,
+        "meta.activities": [
+          ...user.meta.activities,
+          {
+            userId: id,
+            type: "changePassword",
+            activityRef: "password",
+            activityDesc: hashedPassword,
+            createdAt: dateNow,
+          },
+        ],
+        "date.lastActivity": dateNow,
+      },
+      { useFindAndModify: false, new: true }
+    );
+
+    res.status(200).json({ user: updatedUser });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Something went wrong, try sending form again.",
+    });
+  }
+};
+
 const updateProfile = async (req, res) => {
   try {
     const { id, proPic, firstName, lastName } = req.body;
@@ -34,8 +71,7 @@ const updateProfile = async (req, res) => {
     res.status(200).json({ user: updatedUser });
   } catch (error) {
     res.status(500).json({
-      message:
-        "Application rejected: Something ent wrong, try sending form again",
+      message: "Something went wrong, try sending form again.",
     });
   }
 };
@@ -282,4 +318,5 @@ module.exports = {
   signUp,
   register,
   updateProfile,
+  changePassword,
 };
