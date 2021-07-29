@@ -6,7 +6,32 @@ const deactivateAccount = async (req, res) => {
   try {
     const id = req.params.id;
 
-    console.log(id);
+    const user = await UserModel.findById(id);
+
+    const dateNow = new Date();
+
+    await UserModel.findByIdAndUpdate(
+      id,
+      {
+        "status.subscriptionStatus": 0,
+        "status.accountStatus": 2,
+        "meta.activities": [
+          ...user.meta.activities,
+          {
+            userId: id,
+            type: "deactivate",
+            activityRef: "account",
+            activityDesc: "subscription=0:account=2",
+            createdAt: dateNow,
+          },
+        ],
+        "date.lastActivity": dateNow,
+        "date.unsubscribe": dateNow,
+      },
+      { useFindAndModify: false }
+    );
+
+    res.status(200).json({ message: "success" });
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong, try sending form again.",
@@ -32,7 +57,7 @@ const updateSettings = async (req, res) => {
             userId: id,
             type: "updateSettings",
             activityRef: updated,
-            activityDesc: updated,
+            activityDesc: String(req.body[updated]),
             createdAt: dateNow,
           },
         ],
@@ -304,7 +329,11 @@ const register = async (req, res) => {
       // send message welcome back and later on when we have the function to unsubscribe, we need to update the subscription date in database
       await UserModel.findOneAndUpdate(
         { mobile: convertedMobile },
-        { "status.subscriptionStatus": 1, "status.accountStatus": 1 },
+        {
+          "status.subscriptionStatus": 1,
+          "status.accountStatus": 1,
+          "date.subscribe": new Date(),
+        },
         { useFindAndModify: false }
       );
 
