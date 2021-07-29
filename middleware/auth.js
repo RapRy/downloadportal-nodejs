@@ -7,6 +7,7 @@ const auth = async (req, res, next) => {
     const decodeData = jwt.verify(token, process.env.SECRET);
 
     req.userId = decodeData?.id;
+    req.accountType = decodeData?.accountType;
 
     next();
   } catch (error) {

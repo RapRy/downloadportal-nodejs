@@ -1,6 +1,55 @@
 const UserModel = require("../models/userModel.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const moment = require("moment");
+
+const getActivities = async (req, res) => {
+  const id = req.params.id;
+  const accountType = req.accountType;
+
+  const user = await UserModel.findById(id);
+
+  let activities = [];
+  let refDates = [];
+
+  user.meta.activities.forEach((act) => {
+    const refDate = moment(act.createdAt).format("MMMM Do YYYY");
+    const refTime = moment(act.createdAt).format("h:mm a");
+    const { _id, userId, type, activityRef, activityDesc, createdAt } = act;
+    const updatedAct = {
+      _id,
+      userId,
+      type,
+      activityRef,
+      activityDesc,
+      createdAt,
+      refDate,
+      refTime,
+    };
+    if (accountType === "user" && type !== "deactivate")
+      activities.push(updatedAct);
+
+    if (accountType === "admin") activities.push(updatedAct);
+
+    if (!refDates.includes(refDate)) {
+      refDates.push(refDate);
+    }
+  });
+
+  let finalGroupingAct = [];
+
+  refDates.forEach((date) => {
+    let groubByRefDate = { refDate: date, activities: [] };
+
+    let filteredActivities = activities.filter((act) => date === act.refDate);
+
+    groubByRefDate.activities = filteredActivities.reverse();
+
+    finalGroupingAct.push(groubByRefDate);
+  });
+
+  res.status(200).json({ activities: finalGroupingAct.reverse() });
+};
 
 const deactivateAccount = async (req, res) => {
   try {
@@ -192,6 +241,7 @@ const signIn = async (req, res) => {
       {
         mobile: userUpdatedSignIn.mobile,
         id: userUpdatedSignIn._id,
+        accountType: userUpdatedSignIn.accountType,
         lastSignIn: userUpdatedSignIn.date.lastSignIn,
       },
       process.env.SECRET
@@ -396,4 +446,5 @@ module.exports = {
   changePassword,
   updateSettings,
   deactivateAccount,
+  getActivities,
 };

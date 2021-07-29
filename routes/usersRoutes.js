@@ -7,16 +7,19 @@ const {
   changePassword,
   updateSettings,
   deactivateAccount,
+  getActivities,
 } = require("../controllers/usersController.js");
 const Auth = require("../middleware/auth.js");
 
 const router = express.Router();
 
+router.get("/activities/:id", Auth, getActivities);
+
 router.put("/update/profile", Auth, updateProfile);
 router.put("/update/security", Auth, changePassword);
 router.put("/update/settings", Auth, updateSettings);
 
-router.put("/deactivate/:id", deactivateAccount);
+router.put("/deactivate/:id", Auth, deactivateAccount);
 
 router.post("/signin", signIn);
 router.post("/register", register);
