@@ -1,13 +1,29 @@
 const ContentModel = require("../models/contentModel.js");
+const CategoryModel = require("../models/categoryModel.js");
 
-const getContentsBySub = async (req, res) => {
+const getContentsByCat = async (req, res) => {
   try {
-    const { cat, sub } = req.params;
-    const contents = await ContentModel.find({ catName: cat, subCatName: sub });
+    const { cat } = req.params;
 
-    console.log(contents);
+    const category = await CategoryModel.findOne({ catName: cat });
 
-    res.status(200).json({ contents });
+    const contents = await ContentModel.find({ catName: cat });
+
+    let data = {};
+
+    category.subCategories.forEach((subcat) => {
+      const filteredContents = contents.filter(
+        (content) => content.subCatName === subcat.subCatName
+      );
+      data = { ...data, [subcat.subCatName]: filteredContents };
+    });
+
+    res.status(200).json({ data });
+    // const contents = await ContentModel.find({ catName: cat, subCatName: sub });
+
+    // console.log(contents);
+
+    // res.status(200).json({ contents });
   } catch (error) {
     res.status(500).json({
       message:
@@ -30,5 +46,5 @@ const getFeatureds = async (req, res) => {
 
 module.exports = {
   getFeatureds,
-  getContentsBySub,
+  getContentsByCat,
 };
