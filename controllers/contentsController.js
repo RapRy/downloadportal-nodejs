@@ -19,6 +19,8 @@ const getContentsByCat = async (req, res) => {
       data = { ...data, [subcat.subCatName]: filteredContents };
     });
 
+    console.log(data);
+
     res.status(200).json({ data });
     // const contents = await ContentModel.find({ catName: cat, subCatName: sub });
 
