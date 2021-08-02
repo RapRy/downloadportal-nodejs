@@ -15,6 +15,7 @@ const getContentsByCat = async (req, res) => {
       const filteredContents = contents.filter(
         (content) => content.subCatName === subcat.subCatName
       );
+
       data = { ...data, [subcat.subCatName]: filteredContents };
     });
 
