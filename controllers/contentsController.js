@@ -1,5 +1,21 @@
 const ContentModel = require("../models/contentModel.js");
 const CategoryModel = require("../models/categoryModel.js");
+const Content = require("../models/contentModel.js");
+
+const getDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const content = await ContentModel.findById(id);
+
+    res.status(200).json({ content });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
 
 const getContentsByCat = async (req, res) => {
   try {
@@ -7,7 +23,10 @@ const getContentsByCat = async (req, res) => {
 
     const category = await CategoryModel.findOne({ catName: cat });
 
-    const contents = await ContentModel.find({ catName: cat });
+    const contents = await ContentModel.find(
+      { catName: cat },
+      { catName: 1, subCatName: 1, name: 1, thumbnail: 1 }
+    );
 
     let data = {};
 
@@ -48,4 +67,5 @@ const getFeatureds = async (req, res) => {
 module.exports = {
   getFeatureds,
   getContentsByCat,
+  getDetails,
 };
