@@ -30,6 +30,7 @@ const userSchema = new Schema({
   },
   meta: {
     downloads: [String],
+    reviews: [String],
     comments: [String],
     activities: [userActivities],
   },

@@ -11,6 +11,10 @@ const contentSchema = new Schema({
   banner: String,
   snippet: String,
   featured: Boolean,
+  meta: {
+    comments: [String],
+    reviews: [String],
+  },
 });
 
 const Content = model("content", contentSchema);
