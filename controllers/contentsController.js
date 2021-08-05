@@ -31,7 +31,9 @@ const getDetails = async (req, res) => {
 
     const content = await ContentModel.findById(id);
 
-    res.status(200).json({ content });
+    const reviews = await ReviewModel.find({ "ref.content": content._id });
+
+    res.status(200).json({ content, reviews });
   } catch (error) {
     res.status(500).json({
       message:

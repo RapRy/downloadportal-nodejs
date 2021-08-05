@@ -3,6 +3,20 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
 
+const getUserData = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const user = await UserModel.findById(id, { name: 1, _id: 1, proPic: 1 });
+
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong, try sending form again.",
+    });
+  }
+};
+
 const getActivities = async (req, res) => {
   const id = req.params.id;
   const accountType = req.accountType;
@@ -447,4 +461,5 @@ module.exports = {
   updateSettings,
   deactivateAccount,
   getActivities,
+  getUserData,
 };
