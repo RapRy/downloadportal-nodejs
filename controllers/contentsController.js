@@ -2,6 +2,29 @@ const ContentModel = require("../models/contentModel.js");
 const CategoryModel = require("../models/categoryModel.js");
 const ReviewModel = require("../models/reviewModel.js");
 
+const getContentViaCommentId = async (req, res) => {
+  try {
+    const comId = req.params.comId;
+
+    const contentId = await ReviewModel.findOne(
+      { "comments._id": comId },
+      { "ref.content": 1 }
+    );
+
+    const content = await ContentModel.findOne(
+      { _id: contentId.ref.content },
+      { _id: 1, name: 1, subCatName: 1 }
+    );
+
+    res.status(200).json({ content });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
+
 const getContentViaReviewId = async (req, res) => {
   try {
     const revId = req.params.revId;
@@ -94,4 +117,5 @@ module.exports = {
   getContentsByCat,
   getDetails,
   getContentViaReviewId,
+  getContentViaCommentId,
 };
