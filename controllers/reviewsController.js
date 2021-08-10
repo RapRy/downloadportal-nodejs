@@ -18,6 +18,7 @@ const postComment = async (req, res) => {
           {
             type: "comment",
             description: comment,
+            createdAt: dateNow,
             ref: { content: contentId, user: userId, review: reviewId },
           },
         ],
