@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const usersRoutes = require("./routes/usersRoutes.js");
 const contentsRoutes = require("./routes/contentsRoutes.js");
 const categoriesRoutes = require("./routes/categoriesRoutes.js");
+const reviewRoutes = require("./routes/reviewRoutes.js");
 
 const app = express();
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use("/categories", categoriesRoutes);
 app.use("/contents", contentsRoutes);
 app.use("/users", usersRoutes);
+app.use("/reviews", reviewRoutes);
 
 app.get("/", (req, res) => {
   console.log(`running at port ${PORT}`);

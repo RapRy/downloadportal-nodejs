@@ -8,11 +8,13 @@ const {
   updateSettings,
   deactivateAccount,
   getActivities,
+  getUserData,
 } = require("../controllers/usersController.js");
 const Auth = require("../middleware/auth.js");
 
 const router = express.Router();
 
+router.get("/userdata/:id", getUserData);
 router.get("/activities/:id", Auth, getActivities);
 
 router.put("/update/profile", Auth, updateProfile);
