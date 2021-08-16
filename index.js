@@ -24,7 +24,7 @@ app.use("/users", usersRoutes);
 app.use("/reviews", reviewRoutes);
 
 app.get("/", (req, res) => {
-  console.log(`running at port ${PORT}`);
+  res.send('nothing to view here')
 });
 
 mongoose
