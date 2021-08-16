@@ -24,7 +24,7 @@ app.use("/users", usersRoutes);
 app.use("/reviews", reviewRoutes);
 
 app.get("/", (req, res) => {
-  res.send('nothing to view here')
+  res.send('nothing to view here');
 });
 
 mongoose
