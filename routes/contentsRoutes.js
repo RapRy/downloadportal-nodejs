@@ -12,8 +12,8 @@ const router = express.Router();
 
 router.get("/comment/:comId", Auth, getContentViaCommentId);
 router.get("/review/:revId", Auth, getContentViaReviewId);
-router.get("/details/:id", Auth, getDetails);
+router.get("/details/:id", getDetails);
 router.get("/featured", getFeatureds);
-router.get("/:cat", Auth, getContentsByCat);
+router.get("/:cat", getContentsByCat);
 
 module.exports = router;
