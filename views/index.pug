@@ -1,0 +1,38 @@
+doctype html
+html(lang="en")
+    head 
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
+        title DownloadStore API 
+        link(href="/css/main.css", rel="stylesheet")
+        link(href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css", integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==", rel="stylesheet", crossorigin="anonymous", referrerpolicy="no-referrer")
+    body 
+        main.mainContainer
+            header.header
+                img(src="/images/logo.svg", alt="DL Store")
+                h1 Download Store API
+                a(href="https://github.com/RapRy/downloadportal-nodejs", alt="view on github") 
+                    i.fab.fa-github
+                    span view on GitHub
+            
+            section.routes
+                h2 Routes 
+                ul 
+                    each data in routes
+                        li 
+                            span #{data.method}
+                            p #{data.route}
+            
+            section.usage 
+                h2 Usage 
+                each data in fetches
+                    div.fetchMainContainer
+                        h4 #{data.heading} 
+                        div.fetchSubContainer 
+                            p fetch(“#{data.link}”)
+                            button.showResBtn(data-link=`${data.link}` type="button") Show Result
+
+        footer.footer
+            p Developed by RyApache
+                    

@@ -1,0 +1,189 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,500&family=Source+Code+Pro:wght@500&display=swap");
+
+:root {
+  --secondaryMain: #eeeeee;
+  --secondaryLight: #f4f4f4;
+  --primaryMain: #45d9e2;
+  --textWhite: #fff;
+  --textBlack: #000;
+  --fontFamily1: "Roboto", sans-serif;
+  --fontFamily2: "Source Code Pro", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+h2 {
+  font-family: var(--fontFamily1);
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+h4 {
+  font-family: var(--fontFamily1);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.mainContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px 20px 0px;
+}
+
+.header {
+  text-align: center;
+}
+
+.header h1 {
+  font-family: var(--fontFamily1);
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin: 20px 0px;
+}
+
+.header a {
+  display: inline-block;
+  padding: 15px 25px;
+  background: var(--secondaryMain);
+  border-radius: 5px;
+  color: var(--textBlack);
+  font-family: var(--fontFamily1);
+  transition: color 300ms ease-in-out 0.75ms;
+}
+
+.header a:hover {
+  color: var(--primaryMain);
+}
+
+.header a > span {
+  font-size: 0.9rem;
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.routes,
+.usage,
+.footer {
+  margin-top: 80px;
+}
+
+.routes ul {
+  max-width: 400px;
+  margin: 0 auto;
+  font-family: var(--fontFamily1);
+}
+
+.routes ul li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 5px;
+  background-color: var(--secondaryLight);
+}
+
+.routes ul li:last-child {
+  margin-bottom: 0px;
+}
+
+.routes ul li span {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 10px 15px;
+  background-color: var(--primaryMain);
+}
+
+.routes ul li p {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 10px 15px;
+  font-style: italic;
+}
+
+.usage .fetchMainContainer {
+  margin-bottom: 20px;
+}
+
+.usage .fetchSubContainer {
+  border-radius: 5px;
+  background-color: var(--secondaryLight);
+  padding: 20px 20px;
+  position: relative;
+}
+
+.usage .fetchMainContainer p {
+  font-family: var(--fontFamily2);
+  font-size: 0.7rem;
+  font-weight: 500;
+  width: 90%;
+  overflow-x: auto;
+}
+
+.usage .fetchMainContainer .showResBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: calc(100% - 20px);
+  padding: 10px 20px;
+  background-color: var(--primaryMain);
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 300ms ease-in-out 0.75ms;
+  color: var(--textBlack);
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--fontFamily1);
+}
+
+.usage .fetchMainContainer .showResBtn:hover {
+  opacity: 0.6;
+}
+
+.footer {
+  background-color: var(--secondaryMain);
+  padding: 30px;
+}
+
+.footer p {
+  font-family: var(--fontFamily1);
+  text-align: center;
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--textBlack);
+}
+
+@media screen and (max-width: 680px) {
+  .usage .fetchMainContainer p {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+  }
+  .usage .fetchMainContainer .showResBtn {
+    position: relative;
+    top: 0px;
+    right: 0px;
+  }
+}
