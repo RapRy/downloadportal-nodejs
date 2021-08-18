@@ -30,9 +30,44 @@ html(lang="en")
                     div.fetchMainContainer
                         h4 #{data.heading} 
                         div.fetchSubContainer 
-                            p fetch(“#{data.link}”)
+                            pre
+                                code fetch(“#{data.link}”)
                             button.showResBtn(data-link=`${data.link}` type="button") Show Result
+
+                            div.fetchOutput 
+                                span.resultHeading // Result Output:
+                                pre 
+                                    code #{data.output}
+
+            section.examples
+                h2 Examples 
+                div.examplesContainer
+                    a.example(href="https://portal-template-1.netlify.app/")
+                        div.imgContainer
+                            img(src="/images/portal1_jpg.jpg" alt="portal 1")
+                            img(src="/images/portal1_gif.gif" alt="portal 1")
+                        p Portal 1 - React Js
+
+                    a.example(href="https://portal-template-3.netlify.app/")
+                        div.imgContainer
+                            img(src="/images/portal3_jpg.jpg" alt="portal 3")
+                            img(src="/images/portal3_gif.gif" alt="portal 3")
+                        p Portal 3 - React Js
+                    
+                    a.example(href="https://content-portal-6.netlify.app/")
+                        div.imgContainer
+                            img(src="/images/portal6_jpg.jpg" alt="portal 6")
+                            img(src="/images/portal6_gif.gif" alt="portal 6")
+                        p Portal 6 - React Js
+
+                    a.example(href="https://portal-template-9.netlify.app/")
+                        div.imgContainer
+                            img(src="/images/portal9_jpg.jpg" alt="portal 9")
+                            img(src="/images/portal9_gif.gif" alt="portal 9")
+                        p Portal 9 - React Js
 
         footer.footer
             p Developed by RyApache
+
+    script(src="/scripts/main.js")
                     
