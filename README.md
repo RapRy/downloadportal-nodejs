@@ -4,8 +4,6 @@
 
 **API Link: [Download Store API](http://downloadstoreportal.herokuapp.com/)**
 
-**Demo Link: [Download Store](https://downloadstore.netlify.app)**
-
 ___
 
 #### Routes
@@ -34,6 +32,7 @@ ___
 ___
 
 #### Examples
+- **[Download Store](https://downloadstore.netlify.app)**
 - **[Portal 3](https://portal-template-3.netlify.app)**
 - **[Portal 9](https://portal-template-9.netlify.app)**
 - **[Portal 1](https://portal-template-1.netlify.app)**
