@@ -2,7 +2,9 @@
 
 #### Demo and Links
 
-**[API Link](http://downloadstoreportal.herokuapp.com/)**
+**API Link: [Download Store API](http://downloadstoreportal.herokuapp.com/)**
+
+**Demo Link: [Download Store](https://downloadstore.netlify.app)**
 
 ___
 
