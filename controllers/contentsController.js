@@ -67,26 +67,40 @@ const getDetails = async (req, res) => {
 
 const getContentsByCat = async (req, res) => {
   try {
+    const { group } = req.query;
     const { cat } = req.params;
 
     const category = await CategoryModel.findOne({ catName: cat });
 
     const contents = await ContentModel.find(
       { catName: cat },
-      { catName: 1, subCatName: 1, name: 1, thumbnail: 1 }
+      { catName: 1, subCatName: 1, name: 1, thumbnail: 1, description: 1 }
     );
 
-    let data = {};
+    if (group !== undefined) {
+      if (group === "sub") {
+        let data = {};
 
-    category.subCategories.forEach((subcat) => {
-      const filteredContents = contents.filter(
-        (content) => content.subCatName === subcat.subCatName
-      );
+        category.subCategories.forEach((subcat) => {
+          const filteredContents = contents.filter(
+            (content) => content.subCatName === subcat.subCatName
+          );
 
-      data = { ...data, [subcat.subCatName]: filteredContents };
-    });
+          data = { ...data, [subcat.subCatName]: filteredContents };
+        });
 
-    res.status(200).json({ data });
+        res.status(200).json({ data });
+        return;
+      }
+
+      if (group === "main") {
+        res.status(200).json({ data: contents });
+        return;
+      }
+    }
+
+    res.status(200).json({ data: contents });
+
     // const contents = await ContentModel.find({ catName: cat, subCatName: sub });
 
     // console.log(contents);
