@@ -74,7 +74,16 @@ const getContentsByCat = async (req, res) => {
 
     const contents = await ContentModel.find(
       { catName: cat },
-      { catName: 1, subCatName: 1, name: 1, thumbnail: 1, description: 1 }
+      {
+        catName: 1,
+        subCatName: 1,
+        name: 1,
+        thumbnail: 1,
+        description: 1,
+        screenshots: 1,
+        filename: 1,
+        filesize: 1,
+      }
     );
 
     if (group !== undefined) {
