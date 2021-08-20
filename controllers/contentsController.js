@@ -109,12 +109,21 @@ const getContentsByCat = async (req, res) => {
     }
 
     res.status(200).json({ data: contents });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
 
-    // const contents = await ContentModel.find({ catName: cat, subCatName: sub });
+const getContentsBySubcat = async (req, res) => {
+  try {
+    const { cat, sub } = req.params;
 
-    // console.log(contents);
+    const contents = await ContentModel.find({ catName: cat, subCatName: sub });
 
-    // res.status(200).json({ contents });
+    res.status(200).json({ data: contents });
   } catch (error) {
     res.status(500).json({
       message:
@@ -141,4 +150,5 @@ module.exports = {
   getDetails,
   getContentViaReviewId,
   getContentViaCommentId,
+  getContentsBySubcat,
 };
