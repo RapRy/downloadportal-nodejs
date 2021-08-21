@@ -7,10 +7,12 @@ const {
   getContentViaReviewId,
   getContentViaCommentId,
   getContentsBySubcat,
+  getContentsViaSearch,
 } = require("../controllers/contentsController.js");
 
 const router = express.Router();
 
+router.get("/search", getContentsViaSearch);
 router.get("/comment/:comId", Auth, getContentViaCommentId);
 router.get("/review/:revId", Auth, getContentViaReviewId);
 router.get("/details/:id", getDetails);

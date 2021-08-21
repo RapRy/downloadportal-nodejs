@@ -132,6 +132,31 @@ const getContentsBySubcat = async (req, res) => {
   }
 };
 
+const getContentsViaSearch = async (req, res) => {
+  try {
+    const { keyword, key } = req.query;
+
+    if (key !== undefined) {
+      const contents = await ContentModel.find({
+        [`${key}`]: { $regex: keyword, $options: "i" },
+      });
+
+      res.status(200).json({ contents });
+      return;
+    }
+
+    const contents = await ContentModel.find({
+      name: { $regex: keyword, $options: "i" },
+    });
+    res.status(200).json({ contents });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
+
 const getFeatureds = async (req, res) => {
   try {
     const contents = await ContentModel.find({ featured: true });
@@ -151,4 +176,5 @@ module.exports = {
   getContentViaReviewId,
   getContentViaCommentId,
   getContentsBySubcat,
+  getContentsViaSearch,
 };
