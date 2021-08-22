@@ -34,10 +34,28 @@ html(lang="en")
                                 code fetch(“#{data.link}”)
                             button.showResBtn(data-link=`${data.link}` type="button") Show Result
 
-                            div.fetchOutput 
-                                span.resultHeading // Result Output:
-                                pre 
-                                    code #{data.output}
+                            div.additionalDatas
+                                if data.parameters
+                                    each parameter in data.parameters
+                                        div.parameters
+                                            p.paramHeading #{parameter.type === "optional" ? "Optional Parameters:" : "Required Parameters"}
+                                            each param in parameter.params
+                                                div.paramsValues 
+                                                    p.paramList endpoint: ?#{param.key}=
+                                                        each value in param.values
+                                                            span #{value.value}
+                                                    p.paramList default value: 
+                                                        span #{param.defaultValue}
+                                                    each value in param.values
+                                                        div.valueDetails
+                                                            p #{value.value}
+                                                            p #{value.desc}
+                                                            pre
+                                                                code - #{value.example}
+                                div.fetchOutput 
+                                    span.resultHeading // Result Output:
+                                    pre 
+                                        code #{data.output}
 
             section.examples
                 h2 Examples 
