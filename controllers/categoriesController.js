@@ -13,6 +13,21 @@ const getCategories = async (req, res) => {
   }
 };
 
+const getCategory = async (req, res) => {
+  try {
+    const cat = req.params.cat;
+    const category = await CategoryModel.findOne({ active: 1, catName: cat });
+
+    res.status(200).json({ category });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
+
 module.exports = {
   getCategories,
+  getCategory,
 };
