@@ -38,7 +38,7 @@ html(lang="en")
                                 if data.parameters
                                     each parameter in data.parameters
                                         div.parameters
-                                            p.paramHeading #{parameter.type === "optional" ? "Optional Parameters:" : "Required Parameters"}
+                                            p.paramHeading #{parameter.type === "optional" ? "Optional Parameters:" : "Required Parameters:"}
                                             each param in parameter.params
                                                 div.paramsValues 
                                                     p.paramList endpoint: ?#{param.key}=
