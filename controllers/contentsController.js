@@ -67,10 +67,83 @@ const getDetails = async (req, res) => {
 
 const getContentsByCat = async (req, res) => {
   try {
-    const { group } = req.query;
+    const { group, limit } = req.query;
     const { cat } = req.params;
 
-    const category = await CategoryModel.findOne({ catName: cat });
+    const validateLimit = limit !== undefined ? parseInt(limit) : 100;
+
+    if (group !== undefined) {
+      if (group === "sub") {
+        const contents = await ContentModel.aggregate([
+          { $match: { catName: cat } },
+          {
+            $group: {
+              _id: "$subCatName",
+              contents: {
+                $push: {
+                  _id: "$_id",
+                  catName: "$catName",
+                  subCatName: "$subCatName",
+                  name: "$name",
+                  thumbnail: "$thumbnail",
+                  description: "$description",
+                  screenshots: "$screenshots",
+                  filename: "$filename",
+                  filesize: "$filesize",
+                },
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              contents: { $slice: ["$contents", validateLimit] },
+            },
+          },
+          { $sort: { _id: 1 } },
+          {
+            $group: {
+              _id: null,
+              result: {
+                $push: {
+                  k: "$_id",
+                  v: "$contents",
+                },
+              },
+            },
+          },
+          {
+            $replaceRoot: {
+              newRoot: {
+                $arrayToObject: "$result",
+              },
+            },
+          },
+        ]);
+
+        res.status(200).json({ data: { ...contents[0] } });
+        return;
+      }
+
+      if (group === "main") {
+        const contents = await ContentModel.find(
+          { catName: cat },
+          {
+            catName: 1,
+            subCatName: 1,
+            name: 1,
+            thumbnail: 1,
+            description: 1,
+            screenshots: 1,
+            filename: 1,
+            filesize: 1,
+          }
+        ).limit(validateLimit);
+
+        res.status(200).json({ data: contents });
+        return;
+      }
+    }
 
     const contents = await ContentModel.find(
       { catName: cat },
@@ -84,29 +157,7 @@ const getContentsByCat = async (req, res) => {
         filename: 1,
         filesize: 1,
       }
-    );
-
-    if (group !== undefined) {
-      if (group === "sub") {
-        let data = {};
-
-        category.subCategories.forEach((subcat) => {
-          const filteredContents = contents.filter(
-            (content) => content.subCatName === subcat.subCatName
-          );
-
-          data = { ...data, [subcat.subCatName]: filteredContents };
-        });
-
-        res.status(200).json({ data });
-        return;
-      }
-
-      if (group === "main") {
-        res.status(200).json({ data: contents });
-        return;
-      }
-    }
+    ).limit(validateLimit);
 
     res.status(200).json({ data: contents });
   } catch (error) {

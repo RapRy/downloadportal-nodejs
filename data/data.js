@@ -1,6 +1,6 @@
 const fetches = [
   {
-    heading: "Fetch Categories",
+    heading: "Fetch All Categories",
     link: "https://downloadstoreportal.herokuapp.com/categories",
     output: `
       {
@@ -11,6 +11,76 @@ const fetches = [
                 catIcon: String, 
                 catExt: String, 
                 subCategories: Array, 
+                active: Number
+              }, 
+              { ... }, 
+              { ... }
+          ]
+      }`,
+  },
+  {
+    heading: "Fetch Single Category",
+    link: "https://downloadstoreportal.herokuapp.com/categories/Games",
+    output: `
+      {
+          category: 
+            {
+                _id: String, 
+                catName: String, 
+                catIcon: String, 
+                catExt: String, 
+                subCategories: Array, 
+                active: Number
+            }
+      }`,
+  },
+  {
+    heading: "Fetch All Subcategories",
+    link: "https://downloadstoreportal.herokuapp.com/subcategories",
+    parameters: [
+      {
+        type: "optional",
+        params: [
+          {
+            key: "group",
+            values: [
+              {
+                value: "main",
+                desc: "to group subcategories by category",
+                example:
+                  "https://downloadstoreportal.herokuapp.com/contents/subcategories?group=main",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    output: `
+      {
+          subcategories: [
+              {
+                _id: String, 
+                parent_id: String, 
+                subCatName: String, 
+                catName: String, 
+                active: Number
+              }, 
+              { ... }, 
+              { ... }
+          ]
+      }`,
+  },
+  {
+    heading: "Fetch Subcategories By Category",
+    link: "https://downloadstoreportal.herokuapp.com/subcategories/Games",
+    output: `
+      {
+          subcategories: [
+              {
+                _id: String, 
+                parent_id: String, 
+                subCatName: String, 
+                catName: String, 
                 active: Number
               }, 
               { ... }, 
@@ -41,7 +111,17 @@ const fetches = [
                   "https://downloadstoreportal.herokuapp.com/contents/Games?group=main",
               },
             ],
-            defaultValue: "main",
+          },
+          {
+            key: "limit",
+            values: [
+              {
+                value: "number",
+                desc: "set limit of contents to show",
+                example:
+                  "https://downloadstoreportal.herokuapp.com/contents/Games?limit=20",
+              },
+            ],
           },
         ],
       },
@@ -100,7 +180,6 @@ const fetches = [
                   "https://downloadstoreportal.herokuapp.com/contents/search?keyword=user input",
               },
             ],
-            defaultValue: "undefined",
           },
         ],
       },
@@ -172,6 +251,9 @@ const fetches = [
 
 const routes = [
   { method: "get", route: "/categories" },
+  { method: "get", route: "/categories/name of category" },
+  { method: "get", route: "/subcategories" },
+  { method: "get", route: "/subcategories/name of category" },
   { method: "get", route: "/contents/name of category" },
   { method: "get", route: "/contents/name of category/name of subcategory" },
   { method: "get", route: "/contents/search?keyword=user input" },

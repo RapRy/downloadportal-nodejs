@@ -7,6 +7,7 @@ const path = require("path");
 const usersRoutes = require("./routes/usersRoutes.js");
 const contentsRoutes = require("./routes/contentsRoutes.js");
 const categoriesRoutes = require("./routes/categoriesRoutes.js");
+const subcategoriesRoutes = require("./routes/subcategoriesRoutes.js");
 const reviewRoutes = require("./routes/reviewRoutes.js");
 
 const { fetches, routes } = require("./data/data.js");
@@ -24,6 +25,7 @@ app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 
 app.use("/categories", categoriesRoutes);
+app.use("/subcategories", subcategoriesRoutes);
 app.use("/contents", contentsRoutes);
 app.use("/users", usersRoutes);
 app.use("/reviews", reviewRoutes);
