@@ -1,0 +1,73 @@
+doctype html
+html(lang="en")
+    head 
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
+        title DownloadStore API 
+        link(href="/css/main.css", rel="stylesheet")
+        link(href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css", integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==", rel="stylesheet", crossorigin="anonymous", referrerpolicy="no-referrer")
+    body 
+        main.mainContainer
+            header.header
+                img(src="/images/logo.svg", alt="DL Store")
+                h1 Download Store API
+                a(href="https://github.com/RapRy/downloadportal-nodejs", alt="view on github") 
+                    i.fab.fa-github
+                    span view on GitHub
+            
+            section.routes
+                h2 Routes 
+                ul 
+                    each data in routes
+                        li 
+                            span #{data.method}
+                            p #{data.route}
+            
+            section.usage 
+                h2 Usage 
+                each data in fetches
+                    div.fetchMainContainer
+                        h4 #{data.heading} 
+                        div.fetchSubContainer 
+                            pre
+                                code fetch(“#{data.link}”)
+                            button.showResBtn(data-link=`${data.link}` type="button") Show Result
+
+                            div.fetchOutput 
+                                span.resultHeading // Result Output:
+                                pre 
+                                    code #{data.output}
+
+            section.examples
+                h2 Examples 
+                div.examplesContainer
+                    a.example(href="https://portal-template-1.netlify.app/")
+                        div.imgContainer
+                            img(src="/images/portal1_jpg.jpg" alt="portal 1")
+                            img(src="/images/portal1_gif.gif" alt="portal 1")
+                        p Portal 1 - React Js
+
+                    a.example(href="https://portal-template-3.netlify.app/")
+                        div.imgContainer
+                            img(src="/images/portal3_jpg.jpg" alt="portal 3")
+                            img(src="/images/portal3_gif.gif" alt="portal 3")
+                        p Portal 3 - React Js
+                    
+                    a.example(href="https://content-portal-6.netlify.app/")
+                        div.imgContainer
+                            img(src="/images/portal6_jpg.jpg" alt="portal 6")
+                            img(src="/images/portal6_gif.gif" alt="portal 6")
+                        p Portal 6 - React Js
+
+                    a.example(href="https://portal-template-9.netlify.app/")
+                        div.imgContainer
+                            img(src="/images/portal9_jpg.jpg" alt="portal 9")
+                            img(src="/images/portal9_gif.gif" alt="portal 9")
+                        p Portal 9 - React Js
+
+        footer.footer
+            p Developed by RyApache
+
+    script(src="/scripts/main.js")
+                    

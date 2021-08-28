@@ -20,7 +20,7 @@ const getContentViaCommentId = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message:
-        "Application rejected: Something ent wrong, try sending form again",
+        "Application rejected: Something went wrong, try sending form again",
     });
   }
 };
