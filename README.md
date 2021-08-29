@@ -31,15 +31,15 @@
 
 ###### Fetch Subcategories
 
-> fetch("https://downloadstoreportal.herokuapp.com/subcategories")
+> `fetch("https://downloadstoreportal.herokuapp.com/subcategories")`
 
 ###### Fetch Subcategories By Category
 
-> fetch("https://downloadstoreportal.herokuapp.com/subcategories/Games")
+> `fetch("https://downloadstoreportal.herokuapp.com/subcategories/Games")`
 
 ###### Fetch All Contents
 
-> fetch("https://downloadstoreportal.herokuapp.com/contents")
+> `fetch("https://downloadstoreportal.herokuapp.com/contents")`
 
 ###### Fetch Contents By Category
 
@@ -47,11 +47,11 @@
 
 ###### Fetch Contents By Subcategory
 
-> fetch(“https://downloadstoreportal.herokuapp.com/contents/Games/Arcade”)
+> `fetch(“https://downloadstoreportal.herokuapp.com/contents/Games/Arcade”)`
 
 ###### Fetch Contents Via Search
 
-> fetch(“https://downloadstoreportal.herokuapp.com/contents/search”)
+> `fetch(“https://downloadstoreportal.herokuapp.com/contents/search”)`
 
 ###### Fetch Featured Contents
 
