@@ -67,7 +67,16 @@ const getDetails = async (req, res) => {
 
 const getContents = async (req, res) => {
   try {
-    const contents = await ContentModel.find();
+    const contents = await ContentModel.find().select({
+      catName: 1,
+      subCatName: 1,
+      name: 1,
+      thumbnail: 1,
+      description: 1,
+      screenshots: 1,
+      filename: 1,
+      filesize: 1,
+    });
 
     res.status(200).json({ data: contents });
   } catch (error) {

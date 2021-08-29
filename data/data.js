@@ -89,6 +89,26 @@ const fetches = [
       }`,
   },
   {
+    heading: "Fetch All Contents",
+    link: "https://downloadstoreportal.herokuapp.com/contents",
+    output: `
+      {
+        contents: 
+            [
+              {
+                _id: String,
+                name: String,
+                catName: String,
+                subCatName: String,
+                thumbnail: String
+              },
+              { ... },
+              { ... }
+            ]
+      }
+      `,
+  },
+  {
     heading: "Fetch Contents By Category",
     link: "https://downloadstoreportal.herokuapp.com/contents/Games",
     parameters: [
@@ -254,6 +274,7 @@ const routes = [
   { method: "get", route: "/categories/name of category" },
   { method: "get", route: "/subcategories" },
   { method: "get", route: "/subcategories/name of category" },
+  { method: "get", route: "/contents" },
   { method: "get", route: "/contents/name of category" },
   { method: "get", route: "/contents/name of category/name of subcategory" },
   { method: "get", route: "/contents/search?keyword=user input" },
