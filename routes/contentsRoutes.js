@@ -2,6 +2,7 @@ const express = require("express");
 const Auth = require("../middleware/auth.js");
 const {
   getFeatureds,
+  getContents,
   getContentsByCat,
   getDetails,
   getContentViaReviewId,
@@ -12,6 +13,7 @@ const {
 
 const router = express.Router();
 
+router.get("/", getContents);
 router.get("/search", getContentsViaSearch);
 router.get("/comment/:comId", Auth, getContentViaCommentId);
 router.get("/review/:revId", Auth, getContentViaReviewId);

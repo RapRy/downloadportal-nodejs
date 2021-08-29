@@ -65,6 +65,19 @@ const getDetails = async (req, res) => {
   }
 };
 
+const getContents = async (req, res) => {
+  try {
+    const contents = await ContentModel.find();
+
+    res.status(200).json({ data: contents });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
+
 const getContentsByCat = async (req, res) => {
   try {
     const { group, limit } = req.query;
@@ -222,6 +235,7 @@ const getFeatureds = async (req, res) => {
 
 module.exports = {
   getFeatureds,
+  getContents,
   getContentsByCat,
   getDetails,
   getContentViaReviewId,
