@@ -65,33 +65,163 @@ const getDetails = async (req, res) => {
   }
 };
 
+const getContents = async (req, res) => {
+  try {
+    const contents = await ContentModel.find().select({
+      catName: 1,
+      subCatName: 1,
+      name: 1,
+      thumbnail: 1,
+      description: 1,
+      screenshots: 1,
+      filename: 1,
+      filesize: 1,
+    });
+
+    res.status(200).json({ data: contents });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
+
 const getContentsByCat = async (req, res) => {
   try {
+    const { group, limit } = req.query;
     const { cat } = req.params;
 
-    const category = await CategoryModel.findOne({ catName: cat });
+    const validateLimit = limit !== undefined ? parseInt(limit) : 100;
+
+    if (group !== undefined) {
+      if (group === "sub") {
+        const contents = await ContentModel.aggregate([
+          { $match: { catName: cat } },
+          {
+            $group: {
+              _id: "$subCatName",
+              contents: {
+                $push: {
+                  _id: "$_id",
+                  catName: "$catName",
+                  subCatName: "$subCatName",
+                  name: "$name",
+                  thumbnail: "$thumbnail",
+                  description: "$description",
+                  screenshots: "$screenshots",
+                  filename: "$filename",
+                  filesize: "$filesize",
+                },
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              contents: { $slice: ["$contents", validateLimit] },
+            },
+          },
+          { $sort: { _id: 1 } },
+          {
+            $group: {
+              _id: null,
+              result: {
+                $push: {
+                  k: "$_id",
+                  v: "$contents",
+                },
+              },
+            },
+          },
+          {
+            $replaceRoot: {
+              newRoot: {
+                $arrayToObject: "$result",
+              },
+            },
+          },
+        ]);
+
+        res.status(200).json({ data: { ...contents[0] } });
+        return;
+      }
+
+      if (group === "main") {
+        const contents = await ContentModel.find(
+          { catName: cat },
+          {
+            catName: 1,
+            subCatName: 1,
+            name: 1,
+            thumbnail: 1,
+            description: 1,
+            screenshots: 1,
+            filename: 1,
+            filesize: 1,
+          }
+        ).limit(validateLimit);
+
+        res.status(200).json({ data: contents });
+        return;
+      }
+    }
 
     const contents = await ContentModel.find(
       { catName: cat },
-      { catName: 1, subCatName: 1, name: 1, thumbnail: 1 }
-    );
+      {
+        catName: 1,
+        subCatName: 1,
+        name: 1,
+        thumbnail: 1,
+        description: 1,
+        screenshots: 1,
+        filename: 1,
+        filesize: 1,
+      }
+    ).limit(validateLimit);
 
-    let data = {};
-
-    category.subCategories.forEach((subcat) => {
-      const filteredContents = contents.filter(
-        (content) => content.subCatName === subcat.subCatName
-      );
-
-      data = { ...data, [subcat.subCatName]: filteredContents };
+    res.status(200).json({ data: contents });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
     });
+  }
+};
 
-    res.status(200).json({ data });
-    // const contents = await ContentModel.find({ catName: cat, subCatName: sub });
+const getContentsBySubcat = async (req, res) => {
+  try {
+    const { cat, sub } = req.params;
 
-    // console.log(contents);
+    const contents = await ContentModel.find({ catName: cat, subCatName: sub });
 
-    // res.status(200).json({ contents });
+    res.status(200).json({ data: contents });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Application rejected: Something ent wrong, try sending form again",
+    });
+  }
+};
+
+const getContentsViaSearch = async (req, res) => {
+  try {
+    const { keyword, key } = req.query;
+
+    if (key !== undefined) {
+      const contents = await ContentModel.find({
+        [`${key}`]: { $regex: keyword, $options: "i" },
+      });
+
+      res.status(200).json({ contents });
+      return;
+    }
+
+    const contents = await ContentModel.find({
+      name: { $regex: keyword, $options: "i" },
+    });
+    res.status(200).json({ contents });
   } catch (error) {
     res.status(500).json({
       message:
@@ -114,8 +244,11 @@ const getFeatureds = async (req, res) => {
 
 module.exports = {
   getFeatureds,
+  getContents,
   getContentsByCat,
   getDetails,
   getContentViaReviewId,
   getContentViaCommentId,
+  getContentsBySubcat,
+  getContentsViaSearch,
 };

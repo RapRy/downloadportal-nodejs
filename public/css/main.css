@@ -18,6 +18,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 img {
   max-width: 100%;
 }
@@ -62,7 +66,7 @@ h4 {
   margin: 20px 0px;
 }
 
-.header a {
+.header a.githubBtn {
   display: inline-block;
   padding: 15px 25px;
   background: var(--secondaryMain);
@@ -80,6 +84,30 @@ h4 {
   font-size: 0.9rem;
   margin-left: 10px;
   font-weight: 500;
+}
+
+.navigation {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.navigation li {
+  display: inline-block;
+  margin-right: 20px;
+  border-right: 2px solid var(--secondaryMain);
+  padding-right: 20px;
+}
+.navigation li:last-child {
+  border-right: none;
+  padding-right: 0px;
+}
+
+.navigation li a {
+  font-family: var(--fontFamily1);
+  font-size: 0.9rem;
+  margin-left: 10px;
+  font-weight: 700;
+  color: var(--textBlack);
 }
 
 .routes,
@@ -117,7 +145,7 @@ h4 {
 }
 
 .routes ul li p {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
   padding: 10px 15px;
   font-style: italic;
@@ -133,7 +161,7 @@ h4 {
   padding: 10px 10px 10px 20px;
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 20px;
+  column-gap: 20px;
 }
 
 .usage .fetchMainContainer pre {
@@ -163,24 +191,142 @@ h4 {
   opacity: 0.6;
 }
 
-.usage .fetchMainContainer .fetchOutput .resultHeading {
+.usage .fetchMainContainer .additionalDatas {
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+}
+
+.usage .fetchMainContainer .additionalDatas .fetchOutput {
+  margin: 40px 20px 10px 10px;
+  display: none;
+}
+
+.usage .fetchMainContainer .additionalDatas .fetchOutput .resultHeading {
   font-family: var(--fontFamily1);
   font-size: 0.9rem;
   font-weight: 500;
   font-style: italic;
 }
 
-.usage .fetchMainContainer .fetchOutput code {
+.usage .fetchMainContainer .additionalDatas .fetchOutput code {
   font-family: var(--fontFamily1);
   font-size: 0.85rem;
   font-weight: 500;
 }
 
-.usage .fetchMainContainer .fetchOutput {
-  grid-column: 1 / 3;
-  grid-row: 2 / 3;
-  margin: 0px 20px 10px 10px;
-  display: none;
+.usage .fetchMainContainer .additionalDatas .parameters {
+  margin: 20px 10px 10px 0px;
+  padding: 15px;
+  background: var(--textWhite);
+  border-radius: 5px;
+}
+
+.usage .fetchMainContainer .additionalDatas .parameters .paramHeading {
+  font-family: var(--fontFamily1);
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.usage .fetchMainContainer .additionalDatas .parameters .paramsValues {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.usage
+  .fetchMainContainer
+  .additionalDatas
+  .parameters
+  .paramsValues:first-child {
+  margin-top: 0px;
+}
+
+.usage
+  .fetchMainContainer
+  .additionalDatas
+  .parameters
+  .paramsValues
+  .paramList {
+  font-family: var(--fontFamily1);
+  font-size: 0.8rem;
+  line-height: 1.8;
+}
+
+.usage
+  .fetchMainContainer
+  .additionalDatas
+  .parameters
+  .paramsValues
+  .paramList
+  span {
+  font-weight: 500;
+}
+
+.usage
+  .fetchMainContainer
+  .additionalDatas
+  .parameters
+  .paramsValues
+  .paramList
+  span::after {
+  content: " | ";
+}
+
+.usage
+  .fetchMainContainer
+  .additionalDatas
+  .parameters
+  .paramsValues
+  .paramList
+  span:last-child:after {
+  content: "";
+}
+
+.usage
+  .fetchMainContainer
+  .additionalDatas
+  .parameters
+  .paramsValues
+  .valueDetails {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.usage
+  .fetchMainContainer
+  .additionalDatas
+  .parameters
+  .paramsValues
+  .valueDetails
+  p {
+  font-family: var(--fontFamily1);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+.usage
+  .fetchMainContainer
+  .additionalDatas
+  .parameters
+  .paramsValues
+  .valueDetails
+  p
+  + p {
+  font-weight: 400;
+}
+
+.usage
+  .fetchMainContainer
+  .additionalDatas
+  .parameters
+  .paramsValues
+  .valueDetails
+  code {
+  font-family: var(--fontFamily2);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--primaryMain);
 }
 
 .examples .examplesContainer {

@@ -12,11 +12,18 @@ html(lang="en")
             header.header
                 img(src="/images/logo.svg", alt="DL Store")
                 h1 Download Store API
-                a(href="https://github.com/RapRy/downloadportal-nodejs", alt="view on github") 
+                a(class="githubBtn" href="https://github.com/RapRy/downloadportal-nodejs", alt="view on github") 
                     i.fab.fa-github
                     span view on GitHub
+                ul.navigation 
+                    li 
+                        a(href="#routes" alt="routes") Routes
+                    li 
+                        a(href="#usage" alt="usage") Usage
+                    li 
+                        a(href="#examples" alt="examples") Examples
             
-            section.routes
+            section.routes#routes
                 h2 Routes 
                 ul 
                     each data in routes
@@ -24,7 +31,7 @@ html(lang="en")
                             span #{data.method}
                             p #{data.route}
             
-            section.usage 
+            section.usage#usage
                 h2 Usage 
                 each data in fetches
                     div.fetchMainContainer
@@ -34,12 +41,28 @@ html(lang="en")
                                 code fetch(“#{data.link}”)
                             button.showResBtn(data-link=`${data.link}` type="button") Show Result
 
-                            div.fetchOutput 
-                                span.resultHeading // Result Output:
-                                pre 
-                                    code #{data.output}
+                            div.additionalDatas
+                                if data.parameters
+                                    each parameter in data.parameters
+                                        div.parameters
+                                            p.paramHeading #{parameter.type === "optional" ? "Optional Parameters:" : "Required Parameters:"}
+                                            each param in parameter.params
+                                                div.paramsValues 
+                                                    p.paramList endpoint: ?#{param.key}=
+                                                        each value in param.values
+                                                            span #{value.value}
+                                                    each value in param.values
+                                                        div.valueDetails
+                                                            p #{value.value}
+                                                            p #{value.desc}
+                                                            pre
+                                                                code - #{value.example}
+                                div.fetchOutput 
+                                    span.resultHeading // Result Output:
+                                    pre 
+                                        code #{data.output}
 
-            section.examples
+            section.examples#examples
                 h2 Examples 
                 div.examplesContainer
                     a.example(href="https://portal-template-1.netlify.app/")
