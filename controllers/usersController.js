@@ -1,4 +1,6 @@
 const UserModel = require("../models/userModel.js");
+const ReviewModel = require("../models/reviewModel.js");
+const CommentModel = require("../models/commentModel.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
@@ -202,6 +204,17 @@ const updateProfile = async (req, res) => {
       { useFindAndModify: false, new: true }
     );
 
+    if (user.name.firstName !== firstName || user.name.lastName !== lastName) {
+      await ReviewModel.updateMany(
+        { "ref.user": id },
+        { $set: { creator: `${firstName} ${lastName}` } }
+      );
+      await CommentModel.updateMany(
+        { "ref.user": id },
+        { $set: { creator: `${firstName} ${lastName}` } }
+      );
+    }
+
     res.status(200).json({ user: updatedUser });
   } catch (error) {
     res.status(500).json({
@@ -213,6 +226,7 @@ const updateProfile = async (req, res) => {
 const signIn = async (req, res) => {
   try {
     const { mobile, password } = req.body;
+    // console.log(req.body);
     const convertedMobile = parseInt(mobile);
 
     const userExist = await UserModel.findOne({ mobile: convertedMobile });

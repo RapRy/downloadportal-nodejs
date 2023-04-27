@@ -1,17 +1,19 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
-const reviewSchema = new Schema(
+const commentSchema = new Schema(
   {
     type: String,
     description: String,
     creator: String,
     ref: {
-      user: String,
       content: String,
+      user: String,
+      review: String,
     },
   },
   { timestamps: true }
 );
-const Review = model("review", reviewSchema);
 
-module.exports = Review;
+const Comment = model("comment", commentSchema);
+
+module.exports = Comment;

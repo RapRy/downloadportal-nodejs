@@ -1,6 +1,7 @@
 const ContentModel = require("../models/contentModel.js");
 const CategoryModel = require("../models/categoryModel.js");
 const ReviewModel = require("../models/reviewModel.js");
+const CommentModel = require("../models/commentModel.js");
 
 const getContentViaCommentId = async (req, res) => {
   try {
@@ -55,8 +56,14 @@ const getDetails = async (req, res) => {
     const content = await ContentModel.findById(id);
 
     const reviews = await ReviewModel.find({ "ref.content": content._id });
+    const comments = await CommentModel.find({ "ref.content": content._id });
 
-    res.status(200).json({ content, reviews });
+    const finalReviews = reviews.map((rev) => ({
+      ...rev,
+      comments: comments.filter((com) => com.ref.review === rev._id),
+    }));
+
+    res.status(200).json({ content, reviews: finalReviews });
   } catch (error) {
     res.status(500).json({
       message:

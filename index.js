@@ -9,6 +9,7 @@ const contentsRoutes = require("./routes/contentsRoutes.js");
 const categoriesRoutes = require("./routes/categoriesRoutes.js");
 const subcategoriesRoutes = require("./routes/subcategoriesRoutes.js");
 const reviewRoutes = require("./routes/reviewRoutes.js");
+const commentRoutes = require("./routes/commentRoutes.js");
 
 const { fetches, routes } = require("./data/data.js");
 
@@ -29,6 +30,7 @@ app.use("/subcategories", subcategoriesRoutes);
 app.use("/contents", contentsRoutes);
 app.use("/users", usersRoutes);
 app.use("/reviews", reviewRoutes);
+app.use("/comments", commentRoutes);
 
 app.get("/", (req, res) => {
   res.render("index", { fetches, routes });
