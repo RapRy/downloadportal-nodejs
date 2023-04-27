@@ -59,9 +59,13 @@ const getDetails = async (req, res) => {
     const comments = await CommentModel.find({ "ref.content": content._id });
 
     const finalReviews = reviews.map((rev) => ({
-      ...rev,
-      comments: comments.filter((com) => com.ref.review === rev._id),
+      ...rev._doc,
+      comments: comments.filter(
+        (com) => com._doc.ref.review === rev._doc._id.toString()
+      ),
     }));
+
+    console.log(finalReviews);
 
     res.status(200).json({ content, reviews: finalReviews });
   } catch (error) {
